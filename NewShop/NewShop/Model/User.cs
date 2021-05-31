@@ -6,19 +6,9 @@ using System.Threading.Tasks;
 
 namespace NewShop.Model
 {
-    public class User
+    public class AspNetUser
     {
-        public User()
-        {
-            Nickname = "Nickname";
-            Login = "Login";
-            Password = "Password";
-            Telephone = "Telephone";
-        }
-        public int UserId { get; set; }
-        public string Nickname { get; set; }
-        public string Login { get; set; }
-        public string Password { get; set; }
-        public string Telephone { get; set; }
+        public string Id { get; set; }
+        public string UserName { get; set; }
     }
 }

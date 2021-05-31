@@ -15,8 +15,7 @@ namespace NewShop.Data
         }
 
         public DbSet<Games> Games { get; set; }
-        public DbSet<UserLibrary> Libraries { get; set; }
+        public DbSet<UserLibrary> UserLibrary { get; set; }
         public DbSet<Reviews> Reviews { get; set; }
-        //public DbSet<Statistics> Statistics { get; set; }
     }
 }

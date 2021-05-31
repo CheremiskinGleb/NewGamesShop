@@ -1,5 +1,5 @@
 ﻿<StaticWebAssets Version="1.0">
-  <ContentRoot BasePath="/" Path="D:\NewShop\NewShop\NewShop\obj\Debug\net5.0\scopedcss\bundle\" />
-  <ContentRoot BasePath="/Identity" Path="C:\Users\DenpUV\.nuget\packages\microsoft.aspnetcore.identity.ui\5.0.6\staticwebassets\V4\" />
-  <ContentRoot BasePath="_content/MudBlazor" Path="C:\Users\DenpUV\.nuget\packages\mudblazor\5.0.8\build\..\staticwebassets\" />
+  <ContentRoot BasePath="/" Path="C:\Users\Пользователь\Desktop\NewShop\NewShop\NewShop\obj\Debug\net5.0\scopedcss\bundle\" />
+  <ContentRoot BasePath="/Identity" Path="C:\Users\Пользователь\.nuget\packages\microsoft.aspnetcore.identity.ui\5.0.6\staticwebassets\V4\" />
+  <ContentRoot BasePath="_content/MudBlazor" Path="C:\Users\Пользователь\.nuget\packages\mudblazor\5.0.8\build\..\staticwebassets\" />
 </StaticWebAssets>

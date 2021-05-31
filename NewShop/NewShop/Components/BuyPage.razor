@@ -1,0 +1,54 @@
+﻿@page "/buy"
+@attribute [Authorize(Roles = "Customer")]
+
+@inherits BuyPageCode
+
+<MudText Color="Color.Primary" Typo="Typo.h2">Корзина</MudText>
+<MudPaper Style="padding: 30px;">
+	<MudList>
+		@if (Loading)
+		{
+			<MudListItem>
+				<MudGrid Spacing="3">
+					<MudItem xs="12" sm="4">
+						<MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="300" Width="300" />
+					</MudItem>
+					<MudItem xs="12" sm="8">
+						<MudSkeleton SkeletonType="SkeletonType.Text" Width="300" />
+						<MudSkeleton SkeletonType="SkeletonType.Text" Width="300" />
+					</MudItem>
+				</MudGrid>
+			</MudListItem>
+		}
+		else
+		{
+			if (GamesList.Count > 0)
+			{
+				foreach (var game in GamesList)
+				{
+				<MudListItem>
+					<MudGrid Spacing="3">
+						<MudItem xs="12" sm="4">
+							<div class="box" style="height: 300px">
+								<img height="300" src="@((game.Status != "" || game.Status != null) ? game.Status : "/default.jpg")" alt="@game.Name" title="@game.Name">
+							</div>
+						</MudItem>
+						<MudItem xs="12" sm="8">
+							<MudText Typo="Typo.h5">@game.Name</MudText>
+							<MudText Typo="Typo.body2">Разработчик: @game.Developer</MudText>
+							<MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() => RemoveFromCart(game))"></MudIconButton>
+						</MudItem>
+					</MudGrid>
+				</MudListItem>
+				}
+				<MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="@(() => BuyGames())">Добавить в библиотеку</MudButton>
+			}
+			else
+			{
+				<MudListItem>
+					<MudText Typo="Typo.h5">Тут пусто!</MudText>
+				</MudListItem>
+			}
+		}
+	</MudList>
+</MudPaper>

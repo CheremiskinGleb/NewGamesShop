@@ -1,42 +1,26 @@
 ﻿@page "/gameslist"
 @using MudBlazor
-@using NewShop.Data
-@using Microsoft.Extensions.DependencyInjection
 @using NewShop.Model
-@inherits OwningComponentBase
-@inject IJSRuntime JSRuntime
+@inherits GamesListCode
 
-<MudText Typo="Typo.h3">Игры</MudText>
-<MudPaper>
-	<MudList>
+<MudText Color="Color.Primary" Typo="Typo.h3">Игры</MudText>
+<MudPaper Style="margin-top: 20px;">
+	<MudGrid Spacing="4" Style="padding: 10px;">
 		@foreach (var game in Games)
 		{
-			<MudListItem>
-				<MudText Typo="Typo.h5">@game.Name</MudText>
-				<MudText Typo="Typo.h6">Жанр: @game.Genre</MudText>
-				<MudText Typo="Typo.h6">Дата выхода: @game.ReleaseDate.ToShortDateString()</MudText>
-				<MudText Typo="Typo.h6">Разработчик: @game.Developer</MudText>
-				<MudText Typo="Typo.h6">@game.Description</MudText>
-				<MudButton OnClick="@(() => ToCart(game.Id))">В карзину</MudButton>
-				<MudDivider />
-			</MudListItem>
+		<MudItem xs="12" sm="6" md="3" @onclick="() => GoTo(game.Id)">
+			<MudPaper Style="padding: 10px" Elevation="4" Height="320" Width="240">
+				<div class="box">
+					<img src="@((game.Status != "" || game.Status != null) ? game.Status : "/default.jpg")" alt="@game.Name" title="@game.Name">
+					<h1>@game.Name</h1>
+				</div>
+				@*<AuthorizeView Roles="Developer">
+					<NotAuthorized>
+						<MudIconButton OnClick="@(() => AddToCart(game.Id))" Icon="@Icons.Material.Filled.AddShoppingCart"></MudIconButton>
+					</NotAuthorized>
+				</AuthorizeView>*@
+			</MudPaper>
+		</MudItem>
 		}
-	</MudList>
+	</MudGrid>
 </MudPaper>
-
-@code {
-	private ApplicationDbContext context { get; set; }
-	private List<Games> Games { get; set; }
-
-	protected override void OnInitialized()
-	{
-		context = ScopedServices.GetRequiredService<ApplicationDbContext>();
-		Games = context.Games.ToList<Games>();
-		StateHasChanged();
-	}
-
-	async void ToCart(int gameId)
-	{
-		JSRuntime.InvokeVoidAsync("setCookie", new object[] { "game", gameId.ToString() });
-	}
-}

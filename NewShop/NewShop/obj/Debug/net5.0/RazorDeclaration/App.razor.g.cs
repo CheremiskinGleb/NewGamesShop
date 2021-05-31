@@ -13,77 +13,77 @@ namespace NewShop
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
 #nullable restore
-#line 1 "D:\NewShop\NewShop\NewShop\_Imports.razor"
+#line 1 "C:\Users\Пользователь\Desktop\NewShop\NewShop\NewShop\_Imports.razor"
 using System.Net.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "D:\NewShop\NewShop\NewShop\_Imports.razor"
+#line 2 "C:\Users\Пользователь\Desktop\NewShop\NewShop\NewShop\_Imports.razor"
 using Microsoft.AspNetCore.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "D:\NewShop\NewShop\NewShop\_Imports.razor"
+#line 3 "C:\Users\Пользователь\Desktop\NewShop\NewShop\NewShop\_Imports.razor"
 using Microsoft.AspNetCore.Components.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "D:\NewShop\NewShop\NewShop\_Imports.razor"
+#line 4 "C:\Users\Пользователь\Desktop\NewShop\NewShop\NewShop\_Imports.razor"
 using Microsoft.AspNetCore.Components.Forms;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "D:\NewShop\NewShop\NewShop\_Imports.razor"
+#line 5 "C:\Users\Пользователь\Desktop\NewShop\NewShop\NewShop\_Imports.razor"
 using Microsoft.AspNetCore.Components.Routing;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "D:\NewShop\NewShop\NewShop\_Imports.razor"
+#line 6 "C:\Users\Пользователь\Desktop\NewShop\NewShop\NewShop\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "D:\NewShop\NewShop\NewShop\_Imports.razor"
+#line 7 "C:\Users\Пользователь\Desktop\NewShop\NewShop\NewShop\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 8 "D:\NewShop\NewShop\NewShop\_Imports.razor"
+#line 8 "C:\Users\Пользователь\Desktop\NewShop\NewShop\NewShop\_Imports.razor"
 using Microsoft.JSInterop;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 9 "D:\NewShop\NewShop\NewShop\_Imports.razor"
+#line 9 "C:\Users\Пользователь\Desktop\NewShop\NewShop\NewShop\_Imports.razor"
 using NewShop;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 10 "D:\NewShop\NewShop\NewShop\_Imports.razor"
+#line 10 "C:\Users\Пользователь\Desktop\NewShop\NewShop\NewShop\_Imports.razor"
 using NewShop.Shared;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 11 "D:\NewShop\NewShop\NewShop\_Imports.razor"
+#line 11 "C:\Users\Пользователь\Desktop\NewShop\NewShop\NewShop\_Imports.razor"
 using MudBlazor;
 
 #line default
@@ -96,6 +96,34 @@ using MudBlazor;
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 17 "C:\Users\Пользователь\Desktop\NewShop\NewShop\NewShop\App.razor"
+      
+	MudTheme MyTheme = new MudTheme()
+	{
+		Palette = new Palette()
+		{
+			Primary = Colors.Orange.Default,
+			Secondary = Colors.Grey.Darken1,
+			AppbarBackground = Colors.Grey.Darken3,
+			Tertiary = Colors.Shades.Black,
+			Background = Colors.Grey.Darken3,
+			TextPrimary = Colors.Shades.Black,
+			DrawerBackground = Colors.Grey.Darken1,
+			TextSecondary = Colors.Grey.Darken4,
+			BackgroundGrey = Colors.Grey.Lighten5
+		},
+
+		LayoutProperties = new LayoutProperties()
+		{
+			DrawerWidthLeft = "260px",
+			DrawerWidthRight = "300px"
+		}
+	};
+
+#line default
+#line hidden
+#nullable disable
     }
 }
 #pragma warning restore 1591

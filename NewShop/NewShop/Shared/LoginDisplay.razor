@@ -1,12 +1,12 @@
 ﻿<AuthorizeView>
     <Authorized>
-		<MudButton Link="Identity/Account/Manage">Hello, @context.User.Identity.Name!</MudButton>
+		<MudButton Color="Color.Primary" Link="Identity/Account/Manage">Привет, @context.User.Identity.Name!</MudButton>
         <form method="post" action="Identity/Account/LogOut">
-            <MudButton ButtonType="ButtonType.Submit">Log out</MudButton>
+            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit">Выход</MudButton>
         </form>
     </Authorized>
 	<NotAuthorized>
-		<MudButton Link="Identity/Account/Register">Register</MudButton>
-		<MudButton Link="Identity/Account/Login">Log in</MudButton>
+		<MudButton Color="Color.Primary" Link="Identity/Account/Register">Регистрация</MudButton>
+		<MudButton Color="Color.Primary" Link="Identity/Account/Login">Вход</MudButton>
 	</NotAuthorized>
 </AuthorizeView>

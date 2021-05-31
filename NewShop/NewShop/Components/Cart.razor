@@ -1,10 +1,36 @@
-﻿@inject IJSRuntime JSRuntime
-@using NewShop.Model
+﻿@inherits CartCode
+@inject NavigationManager NM
 
-
-
-@code 
+<MudText Color="Color.Tertiary" Typo="Typo.h3">Корзина</MudText>
+@if (GamesList != null && GamesList.Count > 0)
 {
-	[Parameter]
-	public string cart { get; set; }
+	<MudPaper Style="padding: 10px;">
+		<MudList>
+			@foreach (var game in GamesList)
+			{
+				<MudListItem @onclick="@(() => NM.NavigateTo("game/" + game.Id, true))">
+					<MudGrid>
+						<MudItem xs="12" md="3">
+								<div class="box" style="height: 120px">
+									<img height="120" src="@((game.Status != "" || game.Status != null) ? game.Status : "/default.jpg")" alt="@game.Name" title="@game.Name">
+								</div>
+						</MudItem>
+						<MudItem xs="12" md="9">
+							<MudText Color="Color.Tertiary" Typo="Typo.h5">@game.Name</MudText>
+							<MudText Color="Color.Tertiary" Typo="Typo.body2">Разработчик: @game.Developer</MudText>
+							<MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() => RemoveFromCart(game))"></MudIconButton>
+							<MudDivider />
+						</MudItem>
+					</MudGrid>
+				</MudListItem>
+			}
+		</MudList>
+		<MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="@(() => { CartService.CloseCart(); NM.NavigateTo("/buy"); })">
+			Купить
+		</MudButton>
+	</MudPaper>
+}
+else
+{
+	<MudText Color="Color.Tertiary" Typo="Typo.h4">Тут пусто!</MudText>
 }

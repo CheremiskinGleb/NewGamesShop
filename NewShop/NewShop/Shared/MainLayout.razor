@@ -1,6 +1,9 @@
 ﻿@inherits LayoutComponentBase
 @using NewShop.Model
 @inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@inject NewShop.Service.CartHandler.ICartHandlerService CartHandler
+
 
 <div class="page">
 	@*<div class="sidebar">
@@ -10,17 +13,28 @@
 
 
 	<div class="main">
-		<MudPopover Open="@_isOpen" Class="px-4 pt-4" Style="position: absolute; right: 0; max-width: 50%; margin-top: 70px">
-			<div class="d-flex flex-column">
+		<MudPopover Open="@_isOpen" Class="px-4 pt-4" Style="position: absolute; right: 0; max-width: 50%; margin-top: 70px; height: 400px;">
+			<div class="d-flex flex-column" style="padding: 20px;">
 				<NewShop.Components.Cart />
-				<MudButton OnClick="@ToggleOpen" Class="ml-auto mr-n3 mb-1" Color="Color.Error">Close</MudButton>
 			</div>
 		</MudPopover>
 
 		<MudAppBar Color="Color.Tertiary">
-			<MudText Typo="Typo.h2" Color="Color.Primary">GameShop</MudText>
+			<MudText @onclick="@(() => NavigationManager.NavigateTo(""))" Typo="Typo.h2" Color="Color.Primary">GameShop</MudText>
 			<MudAppBarSpacer />
-			<MudIconButton Icon="@Icons.Material.Filled.ShoppingCart" OnClick="ToggleOpen"></MudIconButton>
+			<AuthorizeView Roles="Customer">
+				<Authorized>
+					<MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.VideoLibrary" OnClick="@(() => { CartHandler.CloseCart(); NavigationManager.NavigateTo("/library"); })" />
+				</Authorized>
+			</AuthorizeView>
+			<AuthorizeView Roles="Developer">
+				<Authorized>
+					<MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.VideoLibrary" OnClick="@(() => { CartHandler.CloseCart(); NavigationManager.NavigateTo("/library"); })" />
+				</Authorized>
+				<NotAuthorized>
+					<MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.ShoppingCart" OnClick="ToggleOpen"></MudIconButton>
+				</NotAuthorized>
+			</AuthorizeView>
 			<LoginDisplay />
 		</MudAppBar>
 
@@ -49,8 +63,9 @@
 			_isOpen = true;
 	}
 
-	//protected override async Task OnInitializedAsync()
-	//{
-	//	cart = await JSRuntime.InvokeAsync<string>("getCookie", new object[] { "cart" });
-	//}
+	protected override void OnInitialized()
+	{
+		CartHandler.CartCloseEvent += () => { if (_isOpen) ToggleOpen(); };
+
+	}
 }

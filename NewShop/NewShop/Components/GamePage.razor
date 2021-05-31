@@ -1,0 +1,132 @@
+﻿@page "/game/{GameId:int}"
+
+@inherits GamePageCode
+
+@if (Game == null)
+{
+
+}
+else
+{
+	<MudPaper Style="padding: 35px;">
+		<MudGrid Spacing="4">
+			<MudItem xs="12" md="4">
+				<div style="height: 320px" class="box">
+					<img height="320" src="@((Game.Status != "" || Game.Status != null) ? Game.Status : "/default.jpg")" alt="@Game.Name" title="@Game.Name">
+					<h1>@Game.Name</h1>
+				</div>
+			</MudItem>
+			<AuthorizeView>
+				<NotAuthorized>
+					<MudItem xs="6" md="4">
+						<MudText Color="Color.Tertiary" Typo="Typo.h3">@Game.Name</MudText>
+						<MudText Color="Color.Tertiary" Typo="Typo.h5">@Game.Genre</MudText>
+						<MudText Color="Color.Tertiary" Typo="Typo.h6">@Game.Developer</MudText>
+						<MudText Color="Color.Tertiary" Typo="Typo.h6">@Game.ReleaseDate.ToShortDateString()</MudText>
+						<MudText Color="Color.Tertiary" Typo="Typo.body1">@Game.Description</MudText>
+					</MudItem>
+					<MudItem xs="6" md="4">
+						<GameStatistic GameId="@GameId" />
+					</MudItem>
+					@if (!GamePurchased)
+					{
+						<MudItem xs="12">
+							<MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="@(() => AddToCart())">В корзину</MudButton>
+						</MudItem>
+					}
+				</NotAuthorized>
+			</AuthorizeView>
+			<AuthorizeView Roles="Customer">
+				<Authorized>
+					<MudItem xs="6" md="4">
+						<MudText Color="Color.Tertiary" Typo="Typo.h3">@Game.Name</MudText>
+						<MudText Color="Color.Tertiary" Typo="Typo.h5">@Game.Genre</MudText>
+						<MudText Color="Color.Tertiary" Typo="Typo.h6">@Game.Developer</MudText>
+						<MudText Color="Color.Tertiary" Typo="Typo.h6">@Game.ReleaseDate.ToShortDateString()</MudText>
+						<MudText Color="Color.Tertiary" Typo="Typo.body1">@Game.Description</MudText>
+					</MudItem>
+					<MudItem xs="6" md="4">
+						<GameStatistic GameId="@GameId" />
+					</MudItem>
+					@if (!GamePurchased)
+					{
+						<MudItem xs="12">
+							<MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="@(() => AddToCart())">В корзину</MudButton>
+						</MudItem>
+					}
+				</Authorized>
+			</AuthorizeView>
+			<AuthorizeView Roles="Developer">
+				<Authorized>
+					@if (Game.Developer == UserName)
+					{
+						<MudItem xs="6" md="4">
+							<MudTextField Required="true" Label="Название" @bind-Value="Game.Name"></MudTextField>
+							<MudTextField Required="true" Label="Жанр" @bind-Value="Game.Genre"></MudTextField>
+							<MudDatePicker Required="true" Label="Дата релиза" @bind-Date="date" />
+							<MudTextField Required="true" Lines="5" Label="Описание" @bind-Value="Game.Description"></MudTextField>
+							<MudTextField Required="true" Label="Ссылка на обложку" @bind-Value="Game.Status"></MudTextField>
+						</MudItem>
+					}
+					else
+					{
+						<MudItem xs="6" md="4">
+							<MudText Color="Color.Tertiary" Typo="Typo.h3">@Game.Name</MudText>
+							<MudText Color="Color.Tertiary" Typo="Typo.h5">@Game.Genre</MudText>
+							<MudText Color="Color.Tertiary" Typo="Typo.h6">@Game.Developer</MudText>
+							<MudText Color="Color.Tertiary" Typo="Typo.h6">@Game.ReleaseDate.ToShortDateString()</MudText>
+							<MudText Color="Color.Tertiary" Typo="Typo.body1">@Game.Description</MudText>
+						</MudItem>
+					}
+					<MudItem xs="6" md="4">
+						<GameStatistic GameId="@GameId" />
+					</MudItem>
+					@if (Game.Developer == UserName)
+					{
+
+						<MudItem xs="12">
+							<MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="@(() => { NM.NavigateTo("/library"); SaveGame(); })">Сохранить</MudButton>
+						</MudItem>
+					}
+				</Authorized>
+			</AuthorizeView>
+			<MudText Color="Color.Tertiary" Typo="Typo.h4">Обзоры</MudText>
+			@foreach (var review in ReviewsList)
+			{
+				<MudItem xs="12">
+					<MudCard Style="padding: 20px;" Elevation="3" Outlined="true">
+						<MudGrid>
+							<MudItem xs="12">
+								<MudText Color="Color.Tertiary" Typo="Typo.h6">@review.Comment</MudText>
+							</MudItem>
+							<MudItem xs="6">
+								<MudText Color="Color.Tertiary" Typo="Typo.body2">Оценка: @review.Rating</MudText>
+							</MudItem>
+							<MudItem xs="6">
+								<MudText Color="Color.Tertiary" Typo="Typo.body1">@Context.Users.Find(review.UserId)?.UserName</MudText>
+							</MudItem>
+						</MudGrid>
+					</MudCard>
+				</MudItem>
+			}
+			@if (GamePurchased)
+			{
+				<MudItem xs="12">
+					<MudCard Elevation="3">
+						<MudCardContent>
+							<MudText Typo="Typo.h5">
+								Добавить обзор
+							</MudText>
+							<MudTextField Variant="Variant.Outlined" Required="true" Label="Обзор" Lines="12"
+										  @bind-Value="@NewReviewText" />
+							<MudSlider @bind-Value="NewReviewRating" Min="0" Max="10" Step="1" Color="Color.Info">Оценка: @NewReviewRating.ToString()</MudSlider>
+						</MudCardContent>
+						<MudCardActions>
+							<MudButton OnClick="@(() => NewReview())" Variant="Variant.Filled" Color="Color.Tertiary">Отправить</MudButton>
+						</MudCardActions>
+					</MudCard>
+				</MudItem>
+			}
+		</MudGrid>
+	</MudPaper>
+}

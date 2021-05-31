@@ -1,0 +1,69 @@
+﻿@page "/library"
+@attribute [Authorize(Roles = "Customer, Developer")]
+@inherits UserLibraryCode
+@inject NavigationManager NM
+
+<AuthorizeView Roles="Customer">
+	<Authorized>
+	<MudText Color="Color.Primary" Typo="Typo.h3">Библиотека</MudText>
+		<MudPaper>
+			@if (GamesList.Count > 0)
+			{
+				<MudList>
+					@foreach (var game in GamesList)
+					{
+						<MudListItem @onclick="@(() => NM.NavigateTo("/game/" + game.Id))">
+							<MudGrid>
+								<MudItem xs="12" sm="4">
+									<div class="box" style="height: 400px">
+										<img height="400" src="@((game.Status != "" || game.Status != null) ? game.Status : "/default.jpg")" alt="@game.Name" title="@game.Name">
+									</div>
+								</MudItem>
+								<MudItem xs="12" sm="8">
+									<MudText Color="Color.Tertiary" Typo="Typo.h4">@game.Name</MudText>
+									<MudText Color="Color.Tertiary" Typo="Typo.h5">@game.Developer</MudText>
+									<MudText Color="Color.Tertiary" Typo="Typo.h5">@game.Genre</MudText>
+									<MudText Color="Color.Tertiary" Typo="Typo.body2">@game.ReleaseDate.ToShortDateString()</MudText>
+									<MudText Color="Color.Tertiary" Typo="Typo.body1">@game.Description</MudText>
+								</MudItem>
+							</MudGrid>
+						</MudListItem>
+						<MudDivider />
+					}
+				</MudList>
+			}
+		</MudPaper>
+	</Authorized>
+</AuthorizeView>
+<AuthorizeView Roles="Developer">
+	<Authorized>
+		<MudText Color="Color.Primary" Typo="Typo.h3">Библиотека игр @UserName</MudText>
+		<MudButton Style="margin: 20px;" Variant="Variant.Filled" Color="Color.Tertiary" OnClick="@(() => NM.NavigateTo("/newgame"))">Новая игра</MudButton>
+		<MudPaper>
+			@if (GamesList.Count > 0)
+			{
+				<MudList>
+					@foreach (var game in GamesList)
+					{
+						<MudListItem @onclick="@(() => NM.NavigateTo("/game/" + game.Id))">
+							<MudGrid>
+								<MudItem xs="12" sm="4">
+									<div class="box" style="height: 400px">
+										<img height="400" src="@((game.Status != "" || game.Status != null) ? game.Status : "/default.jpg")" alt="@game.Name" title="@game.Name">
+									</div>
+								</MudItem>
+								<MudItem xs="12" sm="8">
+									<MudText Color="Color.Tertiary" Typo="Typo.h4">@game.Name</MudText>
+									<MudText Color="Color.Tertiary" Typo="Typo.h5">@game.Genre</MudText>
+									<MudText Color="Color.Tertiary" Typo="Typo.body2">@game.ReleaseDate.ToShortDateString()</MudText>
+									<MudText Color="Color.Tertiary" Typo="Typo.body1">@game.Description</MudText>
+								</MudItem>
+							</MudGrid>
+						</MudListItem>
+						<MudDivider />
+					}
+				</MudList>
+			}
+		</MudPaper>
+	</Authorized>
+</AuthorizeView>

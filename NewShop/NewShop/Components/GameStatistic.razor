@@ -1,0 +1,13 @@
+﻿@inherits GameStatisticCode
+
+<MudText Color="Color.Tertiary" Typo="Typo.h5">Статистика</MudText>
+@if (Downloading)
+{
+	<MudSkeleton Animation="Animation.Wave" SkeletonType="SkeletonType.Text" Width="200px"></MudSkeleton>
+	<MudSkeleton Animation="Animation.Wave" SkeletonType="SkeletonType.Text" Width="200px"></MudSkeleton>
+}
+else
+{
+	<MudText Color="Color.Tertiary" Typo="Typo.body1">Всего обзоров: @ReviewCount</MudText>
+	<MudText Color="Color.Tertiary" Typo="Typo.body1">Средняя оценка: @AvgRating</MudText>
+}

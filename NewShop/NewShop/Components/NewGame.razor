@@ -1,0 +1,25 @@
+﻿@page "/newgame"
+@attribute [Authorize(Roles = "Developer")]
+@inherits NewGameCode
+
+<MudText Style="margin-bottom: 30px;" Color="Color.Primary" Typo="Typo.h2">Новая игра</MudText>
+<MudPaper Style="padding: 20px;">
+	<MudGrid Spacing="3">
+		<MudItem xs="12" md="4">
+			<div style="height: 320px" class="box">
+				<img height="320" src="@((Game.Status != "" || Game.Status != null) ? Game.Status : "/default.jpg")" alt="@Game.Name" title="@Game.Name">
+				<h1>@Game.Name</h1>
+			</div>
+		</MudItem>
+		<MudItem xs="6" md="4">
+			<MudTextField Required="true" Label="Название" @bind-Value="Game.Name"></MudTextField>
+			<MudTextField Required="true" Label="Жанр" @bind-Value="Game.Genre"></MudTextField>
+			<MudDatePicker Required="true" Label="Дата релиза" @bind-Date="date" />
+			<MudTextField Required="true" Lines="5" Label="Описание" @bind-Value="Game.Description"></MudTextField>
+			<MudTextField Required="true" Label="Ссылка на обложку" @bind-Value="Game.Status"></MudTextField>
+		</MudItem>
+		<MudItem xs="12">
+			<MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="@(() => SaveGame())">Сохранить</MudButton>
+		</MudItem>
+	</MudGrid>
+</MudPaper>
