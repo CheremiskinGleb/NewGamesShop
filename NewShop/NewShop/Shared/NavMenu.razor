@@ -1,0 +1,52 @@
+﻿<MudLink Underline="Underline.None" @onclick="ToggleNavMenu" Href="" Typo="Typo.h3" Color="Color.Tertiary">
+	GameShop
+</MudLink>
+
+<AuthorizeView Roles="Customer">
+	<Authorized>
+		<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+			<ul class="nav flex-column">
+				<li class="nav-item px-3">
+					<MudNavLink class="nav-link" href="gameslist" Match="NavLinkMatch.All">
+						<span class="oi oi-home" aria-hidden="true"></span> Игры
+					</MudNavLink>
+				</li>
+				<li class="nav-item px-3">
+					<MudNavLink class="nav-link" href="counter">
+						<span class="oi oi-plus" aria-hidden="true"></span> Counter
+					</MudNavLink>
+				</li>
+				<li class="nav-item px-3">
+					<MudNavLink class="nav-link" href="fetchdata">
+						<span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+					</MudNavLink>
+				</li>
+			</ul>
+		</div>
+	</Authorized>
+</AuthorizeView>
+
+<AuthorizeView Roles="Developer">
+	<Authorized>
+		<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+			<ul class="nav flex-column">
+				<li class="nav-item px-3">
+					<MudNavLink class="nav-link" href="" Match="NavLinkMatch.All">
+						<span class="oi oi-home" aria-hidden="true"></span> Home
+					</MudNavLink>
+				</li>
+			</ul>
+		</div>
+</Authorized>
+</AuthorizeView>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

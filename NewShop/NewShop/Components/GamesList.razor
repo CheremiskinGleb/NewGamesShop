@@ -1,0 +1,42 @@
+﻿@page "/gameslist"
+@using MudBlazor
+@using NewShop.Data
+@using Microsoft.Extensions.DependencyInjection
+@using NewShop.Model
+@inherits OwningComponentBase
+@inject IJSRuntime JSRuntime
+
+<MudText Typo="Typo.h3">Игры</MudText>
+<MudPaper>
+	<MudList>
+		@foreach (var game in Games)
+		{
+			<MudListItem>
+				<MudText Typo="Typo.h5">@game.Name</MudText>
+				<MudText Typo="Typo.h6">Жанр: @game.Genre</MudText>
+				<MudText Typo="Typo.h6">Дата выхода: @game.ReleaseDate.ToShortDateString()</MudText>
+				<MudText Typo="Typo.h6">Разработчик: @game.Developer</MudText>
+				<MudText Typo="Typo.h6">@game.Description</MudText>
+				<MudButton OnClick="@(() => ToCart(game.Id))">В карзину</MudButton>
+				<MudDivider />
+			</MudListItem>
+		}
+	</MudList>
+</MudPaper>
+
+@code {
+	private ApplicationDbContext context { get; set; }
+	private List<Games> Games { get; set; }
+
+	protected override void OnInitialized()
+	{
+		context = ScopedServices.GetRequiredService<ApplicationDbContext>();
+		Games = context.Games.ToList<Games>();
+		StateHasChanged();
+	}
+
+	async void ToCart(int gameId)
+	{
+		JSRuntime.InvokeVoidAsync("setCookie", new object[] { "game", gameId.ToString() });
+	}
+}

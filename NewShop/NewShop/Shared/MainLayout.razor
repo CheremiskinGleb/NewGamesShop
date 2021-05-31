@@ -1,0 +1,56 @@
+﻿@inherits LayoutComponentBase
+@using NewShop.Model
+@inject IJSRuntime JSRuntime
+
+<div class="page">
+	@*<div class="sidebar">
+			<NavMenu />
+		</div>*@
+
+
+
+	<div class="main">
+		<MudPopover Open="@_isOpen" Class="px-4 pt-4" Style="position: absolute; right: 0; max-width: 50%; margin-top: 70px">
+			<div class="d-flex flex-column">
+				<NewShop.Components.Cart />
+				<MudButton OnClick="@ToggleOpen" Class="ml-auto mr-n3 mb-1" Color="Color.Error">Close</MudButton>
+			</div>
+		</MudPopover>
+
+		<MudAppBar Color="Color.Tertiary">
+			<MudText Typo="Typo.h2" Color="Color.Primary">GameShop</MudText>
+			<MudAppBarSpacer />
+			<MudIconButton Icon="@Icons.Material.Filled.ShoppingCart" OnClick="ToggleOpen"></MudIconButton>
+			<LoginDisplay />
+		</MudAppBar>
+
+		@*<div class="top-row px-4 auth">
+				<LoginDisplay />
+			</div>*@
+
+		<MudMainContent Class="pt-16">
+			<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-6">
+				@Body
+			</MudContainer>
+		</MudMainContent>
+	</div>
+</div>
+
+@code{
+	private string cart = "";
+
+	public bool _isOpen;
+
+	public void ToggleOpen()
+	{
+		if (_isOpen)
+			_isOpen = false;
+		else
+			_isOpen = true;
+	}
+
+	//protected override async Task OnInitializedAsync()
+	//{
+	//	cart = await JSRuntime.InvokeAsync<string>("getCookie", new object[] { "cart" });
+	//}
+}
