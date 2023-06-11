@@ -13,14 +13,14 @@
 
 
 	<div class="main">
-		<MudPopover Open="@_isOpen" Class="px-4 pt-4" Style="position: absolute; right: 0; max-width: 50%; margin-top: 70px; height: 400px;">
+		<MudPopover Open="@_isOpen" Class="px-4 pt-4" Style="position: absolute; right: 0; max-width: 30%; margin-top: 40px; height: 500px;">
 			<div class="d-flex flex-column" style="padding: 20px;">
 				<NewShop.Components.Cart />
 			</div>
 		</MudPopover>
 
 		<MudAppBar Color="Color.Tertiary">
-			<MudText @onclick="@(() => NavigationManager.NavigateTo(""))" Typo="Typo.h2" Color="Color.Primary">GameShop</MudText>
+			<MudText @onclick="@(() => NavigationManager.NavigateTo(""))" Typo="Typo.h2" Color="Color.Primary">Game shop</MudText>
 			<MudAppBarSpacer />
 			<AuthorizeView Roles="Customer">
 				<Authorized>

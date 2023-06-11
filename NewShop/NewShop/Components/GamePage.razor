@@ -24,6 +24,7 @@ else
 						<MudText Color="Color.Tertiary" Typo="Typo.h6">@Game.Developer</MudText>
 						<MudText Color="Color.Tertiary" Typo="Typo.h6">@Game.ReleaseDate.ToShortDateString()</MudText>
 						<MudText Color="Color.Tertiary" Typo="Typo.body1">@Game.Description</MudText>
+						<MudText Color="Color.Tertiary" Typo="Typo.body1">@Game.Price</MudText>
 					</MudItem>
 					<MudItem xs="6" md="4">
 						<GameStatistic GameId="@GameId" />
@@ -44,6 +45,7 @@ else
 						<MudText Color="Color.Tertiary" Typo="Typo.h6">@Game.Developer</MudText>
 						<MudText Color="Color.Tertiary" Typo="Typo.h6">@Game.ReleaseDate.ToShortDateString()</MudText>
 						<MudText Color="Color.Tertiary" Typo="Typo.body1">@Game.Description</MudText>
+						<MudText Color="Color.Tertiary" Typo="Typo.body1">@Game.Price</MudText>
 					</MudItem>
 					<MudItem xs="6" md="4">
 						<GameStatistic GameId="@GameId" />
@@ -65,6 +67,7 @@ else
 							<MudTextField Required="true" Label="Жанр" @bind-Value="Game.Genre"></MudTextField>
 							<MudDatePicker Required="true" Label="Дата релиза" @bind-Date="date" />
 							<MudTextField Required="true" Lines="5" Label="Описание" @bind-Value="Game.Description"></MudTextField>
+							<MudTextField Required="true" Label="Цена" @bind-Value="Game.Price"></MudTextField>
 							<MudTextField Required="true" Label="Ссылка на обложку" @bind-Value="Game.Status"></MudTextField>
 						</MudItem>
 					}
@@ -76,6 +79,7 @@ else
 							<MudText Color="Color.Tertiary" Typo="Typo.h6">@Game.Developer</MudText>
 							<MudText Color="Color.Tertiary" Typo="Typo.h6">@Game.ReleaseDate.ToShortDateString()</MudText>
 							<MudText Color="Color.Tertiary" Typo="Typo.body1">@Game.Description</MudText>
+							<MudText Color="Color.Tertiary" Typo="Typo.body1">@Game.Price</MudText>
 						</MudItem>
 					}
 					<MudItem xs="6" md="4">

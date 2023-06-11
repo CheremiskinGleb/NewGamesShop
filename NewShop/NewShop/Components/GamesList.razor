@@ -3,10 +3,14 @@
 @using NewShop.Model
 @inherits GamesListCode
 
-<MudText Color="Color.Primary" Typo="Typo.h3">Игры</MudText>
-<MudPaper Style="margin-top: 20px;">
-	<MudGrid Spacing="4" Style="padding: 10px;">
-		@foreach (var game in Games)
+<MudText Color="Color.Primary" Typo="Typo.h3"></MudText>
+<MudPaper Style="margin-top: 0px;">
+<MudTextField @bind-Value="name" Label="Поиск по названию или жанру" Variant="Variant.Text"></MudTextField>
+<MudPaper Style="margin-top: 10px; margin-left:20px; margin-right:1000px;">
+<MudButton OnClick="@(() => Filter())" Variant="Variant.Filled" Color="Color.Primary">Поиск</MudButton>
+</MudPaper>
+	<MudGrid Spacing="5" Style="padding: 10px;">
+		@foreach (var game in FiltiredGames)
 		{
 		<MudItem xs="12" sm="6" md="3" @onclick="() => GoTo(game.Id)">
 			<MudPaper Style="padding: 10px" Elevation="4" Height="320" Width="240">
@@ -14,11 +18,7 @@
 					<img src="@((game.Status != "" || game.Status != null) ? game.Status : "/default.jpg")" alt="@game.Name" title="@game.Name">
 					<h1>@game.Name</h1>
 				</div>
-				@*<AuthorizeView Roles="Developer">
-					<NotAuthorized>
-						<MudIconButton OnClick="@(() => AddToCart(game.Id))" Icon="@Icons.Material.Filled.AddShoppingCart"></MudIconButton>
-					</NotAuthorized>
-				</AuthorizeView>*@
+				<MudIconButton OnClick="@(() => AddToCart(game.Id))" Icon="@Icons.Material.Filled.AddShoppingCart"></MudIconButton>
 			</MudPaper>
 		</MudItem>
 		}

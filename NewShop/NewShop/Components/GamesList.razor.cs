@@ -21,12 +21,14 @@ namespace NewShop.Components
 		[Inject]
 		private NavigationManager NavigationManager { get; set; }
 		public List<Games> Games { get; set; }
-		private List<int> cartGamesId = new List<int>();
-
+        public List<Games> FiltiredGames { get; set; }
+        private List<int> cartGamesId = new List<int>();
+		public string name { get; set; }
 		protected override void OnInitialized()
 		{
 			Games = context.Games.ToList<Games>();
-			cartGamesId = cartService.GetCart();
+            FiltiredGames = Games;
+            cartGamesId = cartService.GetCart();
 			StateHasChanged();
 		}
 
@@ -40,5 +42,12 @@ namespace NewShop.Components
 			cartService.CloseCart();
 			NavigationManager.NavigateTo("game/" + gameId);
 		}
-	}
+        public void Filter()
+        {
+            FiltiredGames = string.IsNullOrEmpty(name)? Games 
+				: Games.Where(g => g.Name.ToUpper().Contains(name.ToUpper()) || g.Genre.ToUpper().Contains(name.ToUpper()))
+				.ToList<Games>();
+            StateHasChanged();
+        }
+    }
 }

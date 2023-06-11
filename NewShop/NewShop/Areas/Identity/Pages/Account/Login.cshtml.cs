@@ -44,7 +44,7 @@ namespace NewShop.Areas.Identity.Pages.Account
         {
             [Required]
             [DataType(DataType.Text)]
-            [Display(Name = "User Name")]
+            [Display(Name = "Никнейм")]
             public string UserName { get; set; }
 
             //[Required]
@@ -53,9 +53,10 @@ namespace NewShop.Areas.Identity.Pages.Account
 
             [Required]
             [DataType(DataType.Password)]
+            [Display(Name = "Пароль")]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Запомнить пользователя?")]
             public bool RememberMe { get; set; }
         }
 
@@ -103,7 +104,7 @@ namespace NewShop.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Неверная попытка входа");
                     return Page();
                 }
             }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "m8Y7nnDFOdlxH6pRGRzfa73XpYjQO9SqNSEw5UQbmytntcnbXsPoCYSwcWbVjweFThfRPq80YOHpGISGy2R6Fw==",
+  "dgSpecHash": "sVEE1pBw8nsFGNSm4AEodgeCZ1OHktEa/JBQD2SBCPYbCKMEjU0Fqi4Ci3Mmd7X6oUJvbev2rE4GtlFwFT9uHA==",
   "success": true,
-  "projectFilePath": "D:\\BestNewShop\\NewGamesShop\\NewShop\\NewShop\\NewShop.csproj",
+  "projectFilePath": "D:\\F\\NewGamesShop\\NewShop\\NewShop\\NewShop.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Пользователь\\.nuget\\packages\\entityframework\\6.4.0\\entityframework.6.4.0.nupkg.sha512",
     "C:\\Users\\Пользователь\\.nuget\\packages\\entityframework6.npgsql\\6.4.1\\entityframework6.npgsql.6.4.1.nupkg.sha512",
