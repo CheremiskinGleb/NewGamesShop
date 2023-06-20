@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using NewShop.Model;
+using Microsoft.AspNetCore.Identity;
 
 namespace NewShop.Data
 {

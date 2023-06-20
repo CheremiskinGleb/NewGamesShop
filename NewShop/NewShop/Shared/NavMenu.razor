@@ -4,6 +4,7 @@
 
 <AuthorizeView Roles="Customer">
 	<Authorized>
+        <div @onclick="ToggleUserRoleToDev">В режим разработчика</div>
 		<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
 			<ul class="nav flex-column">
 				<li class="nav-item px-3">
@@ -27,7 +28,8 @@
 </AuthorizeView>
 
 <AuthorizeView Roles="Developer">
-	<Authorized>
+    <Authorized>
+        <div @onclick="ToggleUserRoleToCus">В режим покупателя</div>
 		<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
 			<ul class="nav flex-column">
 				<li class="nav-item px-3">
@@ -48,5 +50,15 @@
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void ToggleUserRoleToDev()
+    {
+        Console.WriteLine("To developer");
+    }
+
+    private void ToggleUserRoleToCus()
+    {
+        Console.WriteLine("To customer");
     }
 }

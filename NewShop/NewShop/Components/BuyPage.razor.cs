@@ -9,6 +9,7 @@ using NewShop.Data;
 using Npgsql;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Components.Authorization;
+using System.ComponentModel.DataAnnotations;
 
 namespace NewShop.Components
 {
@@ -22,10 +23,13 @@ namespace NewShop.Components
         public NavigationManager NM { get; set; }
         [CascadingParameter]
         private Task<AuthenticationState> AuthenticationStateTask { get; set; }
-        public List<Games> GamesList { get; set; }
+        public List<Games> GamesList { get; set; } = new List<Games>();
+
+        public int Summary = 0;
         public bool Loading { get; set; } = true;
         private string UserName { get; set; } = "";
         private string UserId { get; set; } = "";
+        public int Wallet { get; set; } = -1;
 
         protected override void OnInitialized()
         {
@@ -43,6 +47,9 @@ namespace NewShop.Components
             UserId = (from user in DbContext.Users
                       where user.UserName == UserName
                       select user.Id).First();
+
+
+            LoadUserWallet();
         }
 
         private void LoadCart()
@@ -56,12 +63,14 @@ namespace NewShop.Components
                 if (game != null) GamesList.Add(game);
             }
             Loading = false;
+            CountSummary();
             StateHasChanged();
         }
 
         public void RemoveFromCart(Games game)
         {
             CartHandler.RemoveFromCart(game.Id);
+            CountSummary();
         }
 
         public void BuyGames()
@@ -80,8 +89,9 @@ namespace NewShop.Components
                     connection.Open();
                     foreach (var game in GamesList)
                     {
-                        command.CommandText = @"INSERT INTO ""UserLibrary""(""UserId"", ""GameId"") " +
-                                              @"VALUES ('" + UserId + "', '" + game.Id + "')";
+                        command.CommandText = $@"BEGIN;UPDATE ""AspNetUsers"" SET ""Wallet"" = '{Wallet - Summary}' WHERE ""Id"" = '{UserId}';" +
+                            @"INSERT INTO ""UserLibrary""(""UserId"", ""GameId"") " +
+                            @"VALUES ('" + UserId + "', '" + game.Id + "');END;";
 
                         command.ExecuteNonQuery();
                     }
@@ -99,6 +109,62 @@ namespace NewShop.Components
                     NM.NavigateTo("/");
                 }
             }
+        }
+
+        private async void LoadUserWallet()
+        {
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+            NpgsqlConnection connection = new NpgsqlConnection(configuration.GetConnectionString("DefaultConnection"));
+            NpgsqlCommand command = connection.CreateCommand();
+            try
+            {
+
+                connection.Open();
+
+                var query = @"SELECT ""Wallet"" FROM ""AspNetUsers"" WHERE ""Id"" = '" + UserId + "' limit 1";
+
+                Console.WriteLine(query);
+
+                command.CommandText = query;
+
+                var result = await command.ExecuteScalarAsync();
+
+                if (result is null)
+                {
+                    Console.WriteLine("No result!");
+                    return;
+                }
+
+                Wallet = (int)result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                await InvokeAsync(() => StateHasChanged());
+            }
+        }
+
+        public void ToWallet()
+        {
+            NM.NavigateTo("/wallet");
+        }
+
+        private void CountSummary()
+        {
+            var sum = 0;
+
+            foreach (var game in GamesList)
+            {
+                sum += game.Price;
+            }
+
+            Summary = sum;
         }
     }
 }

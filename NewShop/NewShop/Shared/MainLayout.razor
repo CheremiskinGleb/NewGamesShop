@@ -1,8 +1,13 @@
 ﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
 @using NewShop.Model
+@using NewShop.Data
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
 @inject NewShop.Service.CartHandler.ICartHandlerService CartHandler
+@using System.Security.Claims
+@inject NavigationManager NavManager
 
 
 <div class="page">
@@ -20,15 +25,20 @@
 		</MudPopover>
 
 		<MudAppBar Color="Color.Tertiary">
-			<MudText @onclick="@(() => NavigationManager.NavigateTo(""))" Typo="Typo.h2" Color="Color.Primary">Game shop</MudText>
+			<MudText @onclick="@(() => NavigationManager.NavigateTo(""))" Typo="Typo.h2" Color="Color.Primary">GameShop</MudText>
 			<MudAppBarSpacer />
 			<AuthorizeView Roles="Customer">
 				<Authorized>
+                        <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" @onclick="ToggleUserRoleToDev">
+                            В режим разработчика
+                            </MudButton>
+                        
 					<MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.VideoLibrary" OnClick="@(() => { CartHandler.CloseCart(); NavigationManager.NavigateTo("/library"); })" />
 				</Authorized>
 			</AuthorizeView>
 			<AuthorizeView Roles="Developer">
 				<Authorized>
+                    <MudButton @onclick="ToggleUserRoleToCus" Color="Color.Primary" ButtonType="ButtonType.Submit">В режим покупателя</MudButton>
 					<MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.VideoLibrary" OnClick="@(() => { CartHandler.CloseCart(); NavigationManager.NavigateTo("/library"); })" />
 				</Authorized>
 				<NotAuthorized>
@@ -51,21 +61,110 @@
 </div>
 
 @code{
-	private string cart = "";
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
 
-	public bool _isOpen;
+    private string UserName { get; set; } = "";
+    private string UserId { get; set; } = "";
+    private IdentityUser User { get; set; }
 
-	public void ToggleOpen()
-	{
-		if (_isOpen)
-			_isOpen = false;
-		else
-			_isOpen = true;
-	}
 
-	protected override void OnInitialized()
-	{
-		CartHandler.CartCloseEvent += () => { if (_isOpen) ToggleOpen(); };
+    private string? authMessage;
+    private string? surname;
+    private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
 
-	}
+
+    [Inject]
+    public ApplicationDbContext DbContext { get; set; }
+
+    private string cart = "";
+
+    public bool _isOpen;
+
+    public void ToggleOpen()
+    {
+        if (_isOpen)
+            _isOpen = false;
+        else
+            _isOpen = true;
+    }
+
+    protected override void OnInitialized()
+    {
+        CartHandler.CartCloseEvent += () => { if (_isOpen) ToggleOpen(); };
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateTask;
+        UserName = authState.User.Identity.Name;
+
+        User = (from user in DbContext.Users
+                where user.UserName == UserName
+                select user).FirstOrDefault();
+
+        if (User is null) {
+            return;
+        }
+
+        UserId = User.Id;
+    }
+
+    private async void ToggleUserRoleToDev()
+    {
+        var role = DbContext.UserRoles
+            .Where(roles => roles.UserId == UserId)
+            .Select(roles => roles)
+            .FirstOrDefault();
+
+        if (role != null)
+        {
+            DbContext.Entry(role).State = EntityState.Deleted;
+        }
+
+
+        role = new IdentityUserRole<string>
+            {
+                UserId = UserId,
+                RoleId = "dev"
+            };
+
+        DbContext.UserRoles.Add(role);
+
+        await DbContext.SaveChangesAsync();
+
+        var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        if (string.IsNullOrEmpty(returnUrl))
+            NavigationManager.NavigateTo("/Identity/Account/Login", true);
+        else
+            NavigationManager.NavigateTo("/Identity/Account/Login?returnUrl=/" + returnUrl, true);
+    }
+
+    private async void ToggleUserRoleToCus()
+    {
+        var role = DbContext.UserRoles.Where(roles => roles.UserId == UserId).Select(roles => roles).FirstOrDefault();
+
+        if (role != null)
+        {
+            DbContext.Entry(role).State = EntityState.Deleted;
+        }
+
+
+        role = new IdentityUserRole<string>
+            {
+                UserId = UserId,
+                RoleId = "cus"
+            };
+
+        DbContext.UserRoles.Add(role);
+
+        await DbContext.SaveChangesAsync();
+
+        var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        if (string.IsNullOrEmpty(returnUrl))
+            NavigationManager.NavigateTo("/Identity/Account/Login", true);
+        else
+            NavigationManager.NavigateTo("/Identity/Account/Login?returnUrl=/" + returnUrl, true);
+    }
 }

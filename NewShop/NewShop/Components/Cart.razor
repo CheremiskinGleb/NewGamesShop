@@ -17,7 +17,8 @@
 						</MudItem>
 						<MudItem xs="12" md="9">
 							<MudText Color="Color.Tertiary" Typo="Typo.h5">@game.Name</MudText>
-							<MudText Color="Color.Tertiary" Typo="Typo.body2">Разработчик: @game.Developer</MudText>
+                            <MudText Color="Color.Tertiary" Typo="Typo.body2">Разработчик: @game.Developer</MudText>
+                            <MudText Color="Color.Tertiary" Typo="Typo.body2">Цена: @game.Price ₽</MudText>
 							<MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() => RemoveFromCart(game))"></MudIconButton>
 							<MudDivider />
 						</MudItem>
@@ -25,6 +26,7 @@
 				</MudListItem>
 			}
 		</MudList>
+        <MudText Color="Color.Tertiary" Typo="Typo.h6">@Summary ₽</MudText>
 		<MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="@(() => { CartService.CloseCart(); NM.NavigateTo("/buy"); })">
 			Купить
 		</MudButton>

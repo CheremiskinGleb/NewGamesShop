@@ -1,0 +1,13 @@
+﻿@page "/wallet"
+@attribute [Authorize(Roles = "Customer")]
+
+<MudText Color="Color.Primary" Typo="Typo.h2">Кошелек</MudText>
+<MudPaper Style="padding: 30px;">
+    <MudText Typo="Typo.h6">В кошелке: @Wallet ₽</MudText>
+    <MudTextField InputType="InputType.Number" Required="true" Label="Название" @bind-Value="Amount"></MudTextField>
+    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="@(() => Demount())">Пополнить</MudButton>
+</MudPaper>
+
+@code {
+    
+}

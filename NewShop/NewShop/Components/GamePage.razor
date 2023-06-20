@@ -15,6 +15,7 @@ else
 					<img height="320" src="@((Game.Status != "" || Game.Status != null) ? Game.Status : "/default.jpg")" alt="@Game.Name" title="@Game.Name">
 					<h1>@Game.Name</h1>
 				</div>
+                <MudText Color="Color.Tertiary" Typo="Typo.h4">@Game.Price ₽</MudText>
 			</MudItem>
 			<AuthorizeView>
 				<NotAuthorized>
@@ -24,7 +25,6 @@ else
 						<MudText Color="Color.Tertiary" Typo="Typo.h6">@Game.Developer</MudText>
 						<MudText Color="Color.Tertiary" Typo="Typo.h6">@Game.ReleaseDate.ToShortDateString()</MudText>
 						<MudText Color="Color.Tertiary" Typo="Typo.body1">@Game.Description</MudText>
-						<MudText Color="Color.Tertiary" Typo="Typo.body1">@Game.Price</MudText>
 					</MudItem>
 					<MudItem xs="6" md="4">
 						<GameStatistic GameId="@GameId" />
@@ -44,8 +44,7 @@ else
 						<MudText Color="Color.Tertiary" Typo="Typo.h5">@Game.Genre</MudText>
 						<MudText Color="Color.Tertiary" Typo="Typo.h6">@Game.Developer</MudText>
 						<MudText Color="Color.Tertiary" Typo="Typo.h6">@Game.ReleaseDate.ToShortDateString()</MudText>
-						<MudText Color="Color.Tertiary" Typo="Typo.body1">@Game.Description</MudText>
-						<MudText Color="Color.Tertiary" Typo="Typo.body1">@Game.Price</MudText>
+                        <MudText Color="Color.Tertiary" Typo="Typo.body1">@Game.Description</MudText>
 					</MudItem>
 					<MudItem xs="6" md="4">
 						<GameStatistic GameId="@GameId" />

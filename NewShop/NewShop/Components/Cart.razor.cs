@@ -17,10 +17,14 @@ namespace NewShop.Components
         public ApplicationDbContext Context { get; set; }
         public List<Games> GamesList { get; set; } = new List<Games>();
 
+        public int Summary = 0;
+
         public void RemoveFromCart(Games game)
         {
             GamesList.Remove(game);
             CartService.RemoveFromCart(game.Id);
+
+            CountSummary();
         }
 
         protected override void OnInitialized()
@@ -39,7 +43,22 @@ namespace NewShop.Components
                 var game = await Context.Games.FindAsync(gameId);
                 if (game != null) GamesList.Add(game);
             }
+
+            CountSummary();
+
             await InvokeAsync(() => StateHasChanged());
+        }
+
+        private void CountSummary()
+        {
+            var sum = 0;
+
+            foreach (var game in GamesList)
+            {
+                sum += game.Price;
+            }
+
+            Summary =  sum;
         }
     }
 }

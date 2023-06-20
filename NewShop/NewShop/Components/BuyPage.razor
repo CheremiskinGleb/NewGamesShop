@@ -35,13 +35,24 @@
 						</MudItem>
 						<MudItem xs="12" sm="8">
 							<MudText Typo="Typo.h5">@game.Name</MudText>
-							<MudText Typo="Typo.body2">Разработчик: @game.Developer</MudText>
+                                <MudText Typo="Typo.body2">Разработчик: @game.Developer</MudText>
+                                <MudText Typo="Typo.body2">Цена: @game.Price ₽</MudText>
 							<MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() => RemoveFromCart(game))"></MudIconButton>
 						</MudItem>
 					</MudGrid>
 				</MudListItem>
 				}
-				<MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="@(() => BuyGames())">Добавить в библиотеку</MudButton>
+
+                <MudText Typo="Typo.h6">Всего: @Summary ₽</MudText>
+                <MudText Typo="Typo.h6">В кошельке: @Wallet ₽</MudText>
+                if (Summary <= Wallet)
+                {
+                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="@(() => BuyGames())">Купить</MudButton>
+                }
+                else
+                {
+                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="@(() => ToWallet())">Пополнить кошелек</MudButton>
+                }
 			}
 			else
 			{
