@@ -7,17 +7,29 @@ using NewShop.Data;
 using NewShop.Model;
 using NewShop.Service.CartHandler;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+using Microsoft.JSInterop;
 
 namespace NewShop.Components
 {
-    public class GamePageCode: ComponentBase
+    public class GamePageCode : ComponentBase
     {
         [Inject]
+        public IConfiguration config { get; set; }
+
+        [Inject]
+        public IJSRuntime jsRuntime { get; set; }
+        
+        [Inject]
         public NavigationManager NM { get; set; }
+
         [Inject]
         public ApplicationDbContext Context { get; set; }
+
         [Inject]
         public ICartHandlerService CartService { get; set; }
+
         [CascadingParameter]
         private Task<AuthenticationState> AuthenticationStateTask { get; set; }
 
@@ -95,11 +107,16 @@ namespace NewShop.Components
             }
         }
 
-        public void SaveGame()
+        public void SaveGame(bool setReleaseDate = true)
         {
             if (Game.Name != "" && Game.Genre != null && Game.Developer != "" && Game.Description != "")
             {
-                Game.ReleaseDate = date.Value;
+
+                if (setReleaseDate)
+                {
+                    Game.ReleaseDate = date.Value;
+                }
+
                 try
                 {
                     Context.SaveChanges();
@@ -108,7 +125,45 @@ namespace NewShop.Components
                 {
                     Console.WriteLine(e.Message);
                 }
+                finally
+                {
+                    StateHasChanged();
+                }
             }
+        }
+
+        public async Task LoadFile(Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs e)
+        {
+            try
+            {
+                var maxFileSize = 1024 * 1024 * 1024;
+                
+                var newFileName = Path.ChangeExtension(
+                    Path.GetFileNameWithoutExtension(e.File.Name) + $"AA{GameId}AA" + DateTime.Now.Millisecond.ToString(),
+                    Path.GetExtension(e.File.Name)
+                );
+
+                var path = Path.Combine(config.GetValue<string>("FileStorage"), "gameshop", newFileName);
+                Directory.CreateDirectory(Path.Combine(config.GetValue<string>("FileStorage")!, "gameshop"));
+
+                await using FileStream fs = new(path, FileMode.Create);
+                await e.File.OpenReadStream(maxFileSize).CopyToAsync(fs);
+
+                Game.File = newFileName;
+                SaveGame(false);
+            }
+            catch
+            {
+
+            }
+        }
+
+        public async Task DownloadGame()
+        {
+            var fileName = Path.GetFileNameWithoutExtension(Game.File);
+            var extention = Path.GetExtension(Game.File);
+
+            await jsRuntime.InvokeVoidAsync("open", $"/api/Download/DownloadFile?fileName={fileName}&extention={extention.Remove(0, 1)}", "_blank");
         }
     }
 }

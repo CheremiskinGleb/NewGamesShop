@@ -32,7 +32,8 @@
                         <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" @onclick="ToggleUserRoleToDev">
                             В режим разработчика
                             </MudButton>
-                        
+                    
+					<MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.AttachMoney" OnClick="@(() => { CartHandler.CloseCart(); NavigationManager.NavigateTo("/wallet"); })" />    
 					<MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.VideoLibrary" OnClick="@(() => { CartHandler.CloseCart(); NavigationManager.NavigateTo("/library"); })" />
 				</Authorized>
 			</AuthorizeView>

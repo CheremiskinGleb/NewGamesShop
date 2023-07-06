@@ -1,0 +1,19 @@
+﻿@using MudBlazor
+@using NewShop.Model
+@inherits GamesTopCode
+
+<MudText Color="Color.Primary" Typo="Typo.h3" Align="@Align.Center">Топ игр</MudText>
+	<MudGrid Spacing="5" Style="padding: 10px;">
+		@foreach (var game in Games)
+		{
+		<MudItem xs="12" sm="6" md="3" @onclick="() => GoTo(game.Id)">
+			<MudPaper Style="padding: 10px" Elevation="4" Height="320" Width="240">
+				<div class="box">
+					<img src="@((game.Status != "" || game.Status != null) ? game.Status : "/default.jpg")" alt="@game.Name" title="@game.Name">
+					<h1>@game.Name</h1>
+				</div>
+				<MudIconButton OnClick="@(() => AddToCart(game.Id))" Icon="@Icons.Material.Filled.AddShoppingCart"></MudIconButton>
+			</MudPaper>
+		</MudItem>
+		}
+	</MudGrid>

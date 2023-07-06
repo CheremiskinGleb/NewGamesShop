@@ -3,8 +3,10 @@
 @using NewShop.Model
 @inherits GamesListCode
 
+
+<GamesTop></GamesTop>
 <MudText Color="Color.Primary" Typo="Typo.h3"></MudText>
-<MudPaper Style="margin-top: 0px;">
+<MudPaper Style="margin: 2em;padding: 15px">
 <MudTextField @bind-Value="name" Label="Поиск по названию или жанру" Variant="Variant.Text"></MudTextField>
 <MudPaper Style="margin-top: 10px; margin-left:20px; margin-right:1000px;">
 <MudButton OnClick="@(() => Filter())" Variant="Variant.Filled" Color="Color.Primary">Поиск</MudButton>

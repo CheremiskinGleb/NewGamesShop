@@ -70,6 +70,7 @@ namespace NewShop.Components
             }
             finally
             {
+                connection.Close();
                 await InvokeAsync(() => StateHasChanged());
             }
         }
@@ -114,6 +115,7 @@ namespace NewShop.Components
             }
             finally
             {
+                connection?.Close();
                 LoadUserWallet();
             }
         }

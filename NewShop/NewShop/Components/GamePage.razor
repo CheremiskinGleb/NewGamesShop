@@ -55,6 +55,12 @@ else
 							<MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="@(() => AddToCart())">В корзину</MudButton>
 						</MudItem>
 					}
+                    else if (!string.IsNullOrEmpty(Game.File))
+                    {
+                        <MudItem xs="12">
+							<MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="@(() => DownloadGame())">Скачать</MudButton>
+						</MudItem>
+                    }
 				</Authorized>
 			</AuthorizeView>
 			<AuthorizeView Roles="Developer">
@@ -68,6 +74,14 @@ else
 							<MudTextField Required="true" Lines="5" Label="Описание" @bind-Value="Game.Description"></MudTextField>
 							<MudTextField Required="true" Label="Цена" @bind-Value="Game.Price"></MudTextField>
 							<MudTextField Required="true" Label="Ссылка на обложку" @bind-Value="Game.Status"></MudTextField>
+                            @if (!string.IsNullOrEmpty(Game.File))
+                            {
+                                <MudText Color="Color.Tertiary" Typo="Typo.body1">Игра загружена</MudText>
+                            }
+                            @if (GameId != 0)
+                            {
+                                <InputFile class="form-control" OnChange="@LoadFile">Загрузить игру</InputFile>
+                            }
 						</MudItem>
 					}
 					else

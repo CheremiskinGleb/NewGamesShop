@@ -89,9 +89,13 @@ namespace NewShop.Components
                     connection.Open();
                     foreach (var game in GamesList)
                     {
-                        command.CommandText = $@"BEGIN;UPDATE ""AspNetUsers"" SET ""Wallet"" = '{Wallet - Summary}' WHERE ""Id"" = '{UserId}';" +
+                        command.CommandText = $@"BEGIN;UPDATE ""AspNetUsers"" SET ""Wallet"" = '{Wallet - game.Price}' WHERE ""Id"" = '{UserId}';" +
                             @"INSERT INTO ""UserLibrary""(""UserId"", ""GameId"") " +
-                            @"VALUES ('" + UserId + "', '" + game.Id + "');END;";
+                            @"VALUES ('" + UserId + "', '" + game.Id + "');" +
+                            $@"UPDATE ""AspNetUsers"" SET ""Wallet"" = '{(int)(game.Price * 0.9)}' WHERE ""UserName"" = (" + 
+                            $@"SELECT ""Developer"" FROM ""Games"" WHERE ""Id"" = '{game.Id}' " + 
+                            ");"+
+                            "END;";
 
                         command.ExecuteNonQuery();
                     }
@@ -146,6 +150,7 @@ namespace NewShop.Components
             }
             finally
             {
+                connection.Close();
                 await InvokeAsync(() => StateHasChanged());
             }
         }
